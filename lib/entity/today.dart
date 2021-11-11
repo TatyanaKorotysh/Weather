@@ -1,14 +1,14 @@
-import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:weather/entity/clouds.dart';
+import 'package:weather/entity/coord.dart';
+import 'package:weather/entity/main.dart';
+import 'package:weather/entity/sys.dart';
+import 'package:weather/entity/weather.dart';
+import 'package:weather/entity/wind.dart';
 
-import 'package:collection/collection.dart';
+part 'today.g.dart';
 
-import 'clouds.dart';
-import 'coord.dart';
-import 'main.dart';
-import 'sys.dart';
-import 'weather.dart';
-import 'wind.dart';
-
+@JsonSerializable()
 class TodayWeatherApi {
   final Coord coord;
   final List<Weather> weather;
@@ -39,82 +39,8 @@ class TodayWeatherApi {
     required this.cod,
   });
 
-  TodayWeatherApi copyWith({
-    Coord? coord,
-    List<Weather>? weather,
-    String? base,
-    Main? main,
-    int? visibility,
-    Wind? wind,
-    Clouds? clouds,
-    int? dt,
-    Sys? sys,
-    int? timezone,
-    int? id,
-    String? name,
-    int? cod,
-  }) {
-    return TodayWeatherApi(
-      coord: coord ?? this.coord,
-      weather: weather ?? this.weather,
-      base: base ?? this.base,
-      main: main ?? this.main,
-      visibility: visibility ?? this.visibility,
-      wind: wind ?? this.wind,
-      clouds: clouds ?? this.clouds,
-      dt: dt ?? this.dt,
-      sys: sys ?? this.sys,
-      timezone: timezone ?? this.timezone,
-      id: id ?? this.id,
-      name: name ?? this.name,
-      cod: cod ?? this.cod,
-    );
-  }
+  factory TodayWeatherApi.fromJson(Map<String, dynamic> json) =>
+      _$TodayWeatherApiFromJson(json);
 
-  Map<String, dynamic> toMap() {
-    return {
-      'coord': coord.toMap(),
-      'weather': weather.map((x) => x.toMap()).toList(),
-      'base': base,
-      'main': main.toMap(),
-      'visibility': visibility,
-      'wind': wind.toMap(),
-      'clouds': clouds.toMap(),
-      'dt': dt,
-      'sys': sys.toMap(),
-      'timezone': timezone,
-      'id': id,
-      'name': name,
-      'cod': cod,
-    };
-  }
-
-  factory TodayWeatherApi.fromMap(Map<String, dynamic> map) {
-    return TodayWeatherApi(
-      coord: Coord.fromMap(map['coord']),
-      weather:
-          List<Weather>.from(map['weather']?.map((x) => Weather.fromMap(x))),
-      base: map['base'],
-      main: Main.fromMap(map['main']),
-      visibility: map['visibility']?.toInt(),
-      wind: Wind.fromMap(map['wind']),
-      clouds: Clouds.fromMap(map['clouds']),
-      dt: map['dt']?.toInt(),
-      sys: Sys.fromMap(map['sys']),
-      timezone: map['timezone']?.toInt(),
-      id: map['id']?.toInt(),
-      name: map['name'],
-      cod: map['cod']?.toInt(),
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory TodayWeatherApi.fromJson(String source) =>
-      TodayWeatherApi.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'TodayWeatherApi(coord: $coord, weather: $weather, base: $base, main: $main, visibility: $visibility, wind: $wind, clouds: $clouds, dt: $dt, sys: $sys, timezone: $timezone, id: $id, name: $name, cod: $cod)';
-  }
+  Map<String, dynamic> toJson() => _$TodayWeatherApiToJson(this);
 }

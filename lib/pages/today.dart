@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather/bloc/todayWeatherBloc.dart';
+import 'package:weather/entity/today.dart';
 import 'package:weather/events/todayWeatherEvents.dart';
 
 class Today extends StatefulWidget {
@@ -21,14 +22,13 @@ class _TodayState extends State<Today> {
       body: Center(
         child: StreamBuilder(
           stream: _todayWeatherBloc.todayWeatherSink,
-          initialData: "Определение геолокации...",
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '${snapshot.data}',
+                    '${snapshot.data.clouds.all}',
                   ),
                 ],
               );

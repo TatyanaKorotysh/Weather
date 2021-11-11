@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:weather/entity/today.dart';
 import 'package:weather/events/todayWeatherEvents.dart';
+import 'package:weather/location/location.dart';
 import 'package:weather/models/todayWeatherModel.dart';
 
 class TodayWeatherBloc {
@@ -20,8 +22,11 @@ class TodayWeatherBloc {
   }
 
   void _eventToState(TodatWeatherEvent event) async {
+    final loationData = await Location().getLocationData();
+
     final TodayWeatherModel model = TodayWeatherModel();
-    final data = await model.reloadTodayWeather();
+    final data = await model.reloadTodayWeather(loationData[0]);
+
     _todayWeatherStream.add(data);
   }
 
