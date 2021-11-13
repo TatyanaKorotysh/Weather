@@ -15,6 +15,7 @@ Main _$MainFromJson(Map<String, dynamic> json) => Main(
       humidity: json['humidity'] as int,
       seaLevel: json['sea_level'] as int?,
       grndLevel: json['grnd_level'] as int?,
+      tempKf: (json['temp_kf'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$MainToJson(Main instance) => <String, dynamic>{
@@ -26,4 +27,5 @@ Map<String, dynamic> _$MainToJson(Main instance) => <String, dynamic>{
       'humidity': instance.humidity,
       'sea_level': instance.seaLevel,
       'grnd_level': instance.grndLevel,
+      'temp_kf': instance.tempKf,
     };

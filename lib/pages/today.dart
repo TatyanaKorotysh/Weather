@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather/bloc/todayWeatherBloc.dart';
-import 'package:weather/entity/today.dart';
 import 'package:weather/events/todayWeatherEvents.dart';
 
 class Today extends StatefulWidget {
@@ -15,30 +14,25 @@ class _TodayState extends State<Today> {
   Widget build(BuildContext context) {
     _todayWeatherBloc.todayWeatherEventSink.add(UpdateTodayWeatherEvent());
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter Demo Home Page'),
-      ),
-      body: Center(
-        child: StreamBuilder(
-          stream: _todayWeatherBloc.todayWeatherSink,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    '${snapshot.data.clouds.all}',
-                  ),
-                ],
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
+    return Center(
+      child: StreamBuilder(
+        stream: _todayWeatherBloc.todayWeatherSink,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '${snapshot.data.clouds.all}',
+                ),
+              ],
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }

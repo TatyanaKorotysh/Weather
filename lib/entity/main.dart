@@ -17,6 +17,8 @@ class Main {
   final int? seaLevel;
   @JsonKey(name: 'grnd_level')
   final int? grndLevel;
+  @JsonKey(name: 'temp_kf')
+  final double? tempKf;
   Main({
     required this.temp,
     required this.feelsLike,
@@ -26,6 +28,7 @@ class Main {
     required this.humidity,
     this.seaLevel,
     this.grndLevel,
+    this.tempKf,
   });
 
   factory Main.fromJson(Map<String, dynamic> json) => _$MainFromJson(json);

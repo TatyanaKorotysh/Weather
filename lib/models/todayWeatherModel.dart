@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:weather/domain/api_client.dart';
-import 'package:weather/entity/today.dart';
+import 'package:weather/entity/weather/today.dart';
 
 class TodayWeatherModel extends ChangeNotifier {
   final apiClient = ApiClinets();
