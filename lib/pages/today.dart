@@ -68,15 +68,33 @@ class TodayBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          MainTodayWeather(data: data),
-          DetailTodayWeather(data: data),
-          ShareButton(data: data),
-        ],
-      ),
+      child: (MediaQuery.of(context).orientation == Orientation.portrait)
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                MainTodayWeather(data: data),
+                DetailTodayWeather(data: data),
+                ShareButton(data: data),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: MainTodayWeather(data: data),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: DetailTodayWeather(data: data),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: ShareButton(data: data),
+                ),
+              ],
+            ),
     );
   }
 }
@@ -196,7 +214,7 @@ class MainTodayWeather extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(right: 25),
+          padding: EdgeInsets.only(right: 25, top: 10),
           child: Icon(
             CustomIcons.icons[data.weather[0].icon],
             color: Colors.amber,
