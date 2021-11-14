@@ -7,9 +7,10 @@ import 'package:weather/pages/today.dart';
 
 class NavigationBarBloc {
   final _navigationBarStateController = StreamController<Widget>();
-  StreamSink<Widget> get _navigationBarStream =>
+  StreamSink<Widget> get _navigationBarSink =>
       _navigationBarStateController.sink;
-  Stream<Widget> get navigationBarSink => _navigationBarStateController.stream;
+  Stream<Widget> get navigationBarStream =>
+      _navigationBarStateController.stream;
 
   final _navigationBarEventController = StreamController<NavigationBarEvent>();
   Sink<NavigationBarEvent> get navigationBarEventSink =>
@@ -22,10 +23,10 @@ class NavigationBarBloc {
   void _eventToState(NavigationBarEvent event) async {
     switch (event.runtimeType) {
       case RouteToTodayWeatherEvent:
-        _navigationBarStream.add(Today());
+        _navigationBarSink.add(Today());
         break;
       case RouteToForecastWeatherEvent:
-        _navigationBarStream.add(Forecast());
+        _navigationBarSink.add(Forecast());
         break;
     }
   }

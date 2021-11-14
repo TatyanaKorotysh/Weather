@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather/bloc/forecastBloc.dart';
 import 'package:weather/entity/forecast/forecast.dart';
-import 'package:weather/entity/forecast/list.dart';
 import 'package:weather/events/forecastEvents.dart';
 import 'package:weather/pages/components/appBar.dart';
 import 'package:intl/intl.dart';
@@ -129,43 +128,5 @@ class ForecastBody extends StatelessWidget {
         },
       ),
     );
-    // return Expanded(
-    //   child: ListView.builder(
-    //     shrinkWrap: true,
-    //     itemCount: data.list.length,
-    //     itemBuilder: (context, index) {
-    //       int key = data.list.keys.elementAt(index);
-    //       return Column(
-    //         children: [
-    //           Container(
-    //             child: Text(key.toString()),
-    //           ),
-    //           ListView.builder(
-    //               itemCount: data.list[key]!.length,
-    //               physics: ClampingScrollPhysics(),
-    //               itemBuilder: (context, index) {
-    //                 return ListTile(
-    //                   leading: Container(
-    //                     padding: EdgeInsets.only(right: 25),
-    //                     child: Icon(
-    //                       CustomIcons.icons[data.list[6]![0].weather[0].icon],
-    //                       color: Colors.amber,
-    //                       size: 35,
-    //                     ),
-    //                   ),
-    //                   title: Text(
-    //                       DateFormat('HH:mm').format(data.list[6]![0].dtTxt)),
-    //                   subtitle: Text(data.list[6]![0].weather[0].main),
-    //                   trailing: Text(
-    //                     "${data.list[6]![0].main.temp.toInt()}°",
-    //                     style: CustomTextStyle.largeText,
-    //                   ),
-    //                 );
-    //               }),
-    //         ],
-    //       );
-    //     },
-    //   ),
-    // );
   }
 }

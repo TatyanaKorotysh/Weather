@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:weather/bloc/shareWeatherBloc.dart';
 import 'package:weather/bloc/todayWeatherBloc.dart';
 import 'package:weather/entity/today/today.dart';
+import 'package:weather/events/shareWeatherEvents.dart';
 import 'package:weather/events/todayWeatherEvents.dart';
 import 'package:weather/location/windDirection.dart';
 import 'package:weather/pages/components/appBar.dart';
@@ -21,7 +23,7 @@ class _TodayState extends State<Today> {
     _todayWeatherBloc.todayWeatherEventSink.add(UpdateTodayWeatherEvent());
 
     return StreamBuilder(
-      stream: _todayWeatherBloc.todayWeatherSink,
+      stream: _todayWeatherBloc.todayWeatherStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return Column(
           children: [
@@ -60,7 +62,7 @@ class TodayBody extends StatelessWidget {
         children: [
           MainTodayWeather(data: data),
           DetailTodayWeather(data: data),
-          ShareButton(),
+          ShareButton(data: data),
         ],
       ),
     );
@@ -68,10 +70,18 @@ class TodayBody extends StatelessWidget {
 }
 
 class ShareButton extends StatelessWidget {
+  final _shareWeatherBloc = ShareWeatherBloc();
+  final TodayWeatherApi data;
+
+  ShareButton({required this.data});
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        _shareWeatherBloc.shareWeatherEventSink
+            .add(SendWeatherAsTextEvent(shareData: data));
+      },
       child: Text(
         "Share",
         style: CustomTextStyle.textButton,

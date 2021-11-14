@@ -7,9 +7,9 @@ import 'package:weather/models/todayWeatherModel.dart';
 
 class TodayWeatherBloc {
   final _todayWeatherStateController = StreamController<TodayWeatherApi>();
-  StreamSink<TodayWeatherApi> get _todayWeatherStream =>
+  StreamSink<TodayWeatherApi> get _todayWeatherSink =>
       _todayWeatherStateController.sink;
-  Stream<TodayWeatherApi> get todayWeatherSink =>
+  Stream<TodayWeatherApi> get todayWeatherStream =>
       _todayWeatherStateController.stream;
 
   final _todayWeatherEventController = StreamController<TodatWeatherEvent>();
@@ -24,9 +24,9 @@ class TodayWeatherBloc {
     final loationData = await Location().getLocationData();
 
     final TodayWeatherModel model = TodayWeatherModel();
-    final data = await model.reloadTodayWeather(loationData[0]);
+    final todayWeatherData = await model.reloadTodayWeather(loationData[0]);
 
-    _todayWeatherStream.add(data);
+    _todayWeatherSink.add(todayWeatherData);
   }
 
   void dispose() {

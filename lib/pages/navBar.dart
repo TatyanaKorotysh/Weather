@@ -43,7 +43,7 @@ class _NavigationBarState extends State<NavigationBar> {
     return Scaffold(
       body: Center(
         child: StreamBuilder(
-          stream: _navigationBarBloc.navigationBarSink,
+          stream: _navigationBarBloc.navigationBarStream,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return snapshot.data;
