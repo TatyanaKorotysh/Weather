@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:weather/pages/navBar.dart';
+import 'package:weather/pages/nav_bar.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Montserrat',
       ),
-      home: NavigationBar(),
+      home: const NavigationBar(),
     );
   }
 }

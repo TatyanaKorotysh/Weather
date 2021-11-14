@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:weather/entity/today/today.dart';
-import 'package:weather/events/todayWeatherEvents.dart';
+import 'package:weather/events/today_weather_events.dart';
 import 'package:weather/location/location.dart';
-import 'package:weather/models/todayWeatherModel.dart';
+import 'package:weather/models/today_weather_model.dart';
 
 class TodayWeatherBloc {
   final _todayWeatherStateController = StreamController<TodayWeatherApi>();

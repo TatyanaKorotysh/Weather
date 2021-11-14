@@ -10,7 +10,7 @@ TodayWeatherApi _$TodayWeatherApiFromJson(Map<String, dynamic> json) =>
     TodayWeatherApi(
       coord: Coord.fromJson(json['coord'] as Map<String, dynamic>),
       weather: (json['weather'] as List<dynamic>)
-          .map((e) => Weather.fromJson(e as Map<String, dynamic>))
+          .map((dynamic e) => Weather.fromJson(e as Map<String, dynamic>))
           .toList(),
       base: json['base'] as String,
       main: Main.fromJson(json['main'] as Map<String, dynamic>),

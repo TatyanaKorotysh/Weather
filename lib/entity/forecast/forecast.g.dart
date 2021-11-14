@@ -15,7 +15,8 @@ ForecastApi _$ForecastApiFromJson(Map<String, dynamic> json) => ForecastApi(
       //     .toList(),
       list: groupBy(
           (json['list'] as List<dynamic>)
-              .map((e) => ForecastList.fromJson(e as Map<String, dynamic>))
+              .map((dynamic e) =>
+                  ForecastList.fromJson(e as Map<String, dynamic>))
               .toList(), (ForecastList e) {
         return DateFormat('EEEE').format(e.dtTxt); //e.dtTxt.weekday;
       }),

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:weather/entity/today/today.dart';
-import 'package:weather/events/shareWeatherEvents.dart';
+import 'package:weather/events/share_weather_events.dart';
 import 'package:share/share.dart';
 
 class ShareWeatherBloc {
@@ -15,8 +15,8 @@ class ShareWeatherBloc {
 
   void _eventToState(ShareWeatherEvent event) async {
     TodayWeatherApi data = event.shareData;
-    String shareText = "Weather today, ${data.name}\n" +
-        "${(data.main.temp).toInt()}°C | ${data.weather[0].main}\n";
+    String shareText =
+        "Weather today, ${data.name}\n ${(data.main.temp).toInt()}°C | ${data.weather[0].main}";
     Share.share(shareText);
   }
 

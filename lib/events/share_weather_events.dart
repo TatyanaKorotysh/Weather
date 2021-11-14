@@ -7,6 +7,7 @@ abstract class ShareWeatherEvent {
 }
 
 class SendWeatherAsTextEvent extends ShareWeatherEvent {
+  @override
   final TodayWeatherApi shareData;
 
   SendWeatherAsTextEvent({required this.shareData})

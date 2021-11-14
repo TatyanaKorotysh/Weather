@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:weather/bloc/shareWeatherBloc.dart';
-import 'package:weather/bloc/todayWeatherBloc.dart';
+
+import 'package:weather/bloc/share_weather_bloc.dart';
+import 'package:weather/bloc/today_weather_bloc.dart';
 import 'package:weather/entity/today/today.dart';
-import 'package:weather/events/shareWeatherEvents.dart';
-import 'package:weather/events/todayWeatherEvents.dart';
-import 'package:weather/location/windDirection.dart';
-import 'package:weather/pages/components/appBar.dart';
+import 'package:weather/events/share_weather_events.dart';
+import 'package:weather/events/today_weather_events.dart';
+import 'package:weather/location/wind_direction.dart';
+import 'package:weather/pages/components/app_bar.dart';
 import 'package:weather/style/icons.dart';
 import 'package:weather/style/text.dart';
 
-class Today extends StatefulWidget {
+class TodayWeather extends StatefulWidget {
+  const TodayWeather({Key? key}) : super(key: key);
+
   @override
-  _TodayState createState() => _TodayState();
+  _TodayWeatherState createState() => _TodayWeatherState();
 }
 
-class _TodayState extends State<Today> {
+class _TodayWeatherState extends State<TodayWeather> {
   final _todayWeatherBloc = TodayWeatherBloc();
 
   @override
@@ -27,12 +30,12 @@ class _TodayState extends State<Today> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return Column(
           children: [
-            WeatherAppBar(title: "Today"),
+            const WeatherAppBar(title: "Today"),
             (snapshot.hasError)
                 ? Expanded(
                     child: Center(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           snapshot.error.toString(),
                           style: CustomTextStyle.textError,
@@ -41,8 +44,8 @@ class _TodayState extends State<Today> {
                     ),
                   )
                 : (snapshot.hasData)
-                    ? TodayBody(data: snapshot.data)
-                    : Expanded(
+                    ? TodayBody(data: snapshot.data as TodayWeatherApi)
+                    : const Expanded(
                         child: Center(
                           child: CircularProgressIndicator(),
                         ),
@@ -63,7 +66,10 @@ class _TodayState extends State<Today> {
 class TodayBody extends StatelessWidget {
   final TodayWeatherApi data;
 
-  TodayBody({required this.data});
+  const TodayBody({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +87,15 @@ class TodayBody extends StatelessWidget {
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: MainTodayWeather(data: data),
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: DetailTodayWeather(data: data),
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: ShareButton(data: data),
                 ),
@@ -103,7 +109,7 @@ class ShareButton extends StatelessWidget {
   final _shareWeatherBloc = ShareWeatherBloc();
   final TodayWeatherApi data;
 
-  ShareButton({required this.data});
+  ShareButton({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +118,7 @@ class ShareButton extends StatelessWidget {
         _shareWeatherBloc.shareWeatherEventSink
             .add(SendWeatherAsTextEvent(shareData: data));
       },
-      child: Text(
+      child: const Text(
         "Share",
         style: CustomTextStyle.textButton,
       ),
@@ -123,7 +129,10 @@ class ShareButton extends StatelessWidget {
 class DetailTodayWeather extends StatelessWidget {
   final TodayWeatherApi data;
 
-  DetailTodayWeather({required this.data});
+  const DetailTodayWeather({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +144,7 @@ class DetailTodayWeather extends StatelessWidget {
           color: Colors.grey[300],
           thickness: 1,
         ),
-        Padding(padding: EdgeInsets.only(top: 20)),
+        const Padding(padding: EdgeInsets.only(top: 20)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -153,7 +162,7 @@ class DetailTodayWeather extends StatelessWidget {
             )
           ],
         ),
-        Padding(padding: EdgeInsets.only(top: 20)),
+        const Padding(padding: EdgeInsets.only(top: 20)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -163,11 +172,11 @@ class DetailTodayWeather extends StatelessWidget {
             ),
             DetailIcon(
               icon: FontAwesomeIcons.compass,
-              data: "${windDirection(data.wind.deg)}",
+              data: windDirection(data.wind.deg),
             ),
           ],
         ),
-        Padding(padding: EdgeInsets.only(top: 20)),
+        const Padding(padding: EdgeInsets.only(top: 20)),
         Divider(
           indent: MediaQuery.of(context).size.width * 0.3,
           endIndent: MediaQuery.of(context).size.width * 0.3,
@@ -183,7 +192,11 @@ class DetailIcon extends StatelessWidget {
   final IconData icon;
   final String data;
 
-  DetailIcon({required this.icon, required this.data});
+  const DetailIcon({
+    Key? key,
+    required this.icon,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +207,7 @@ class DetailIcon extends StatelessWidget {
           size: 30,
           color: Colors.amber,
         ),
-        Padding(padding: EdgeInsets.only(top: 10)),
+        const Padding(padding: EdgeInsets.only(top: 10)),
         Text(
           data,
           style: CustomTextStyle.simpleText,
@@ -207,14 +220,17 @@ class DetailIcon extends StatelessWidget {
 class MainTodayWeather extends StatelessWidget {
   final TodayWeatherApi data;
 
-  MainTodayWeather({required this.data});
+  const MainTodayWeather({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(right: 25, top: 10),
+          padding: const EdgeInsets.only(right: 25, top: 10),
           child: Icon(
             CustomIcons.icons[data.weather[0].icon],
             color: Colors.amber,
@@ -226,7 +242,7 @@ class MainTodayWeather extends StatelessWidget {
             "${data.name}, ${data.sys.country}",
             style: CustomTextStyle.title,
           ),
-          padding: EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20),
         ),
         Text(
           "${(data.main.temp).toInt()}°C | ${data.weather[0].main}",

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:weather/entity/forecast/forecast.dart';
-import 'package:weather/events/forecastEvents.dart';
+import 'package:weather/events/forecast_events.dart';
 import 'package:weather/location/location.dart';
-import 'package:weather/models/forecastModel.dart';
+import 'package:weather/models/forecast_model.dart';
 
 class ForecastBloc {
   final _forecastStateController = StreamController<ForecastApi>();

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:weather/events/NavigationBarEvents.dart';
+import 'package:weather/events/navigation_bar_events.dart';
 import 'package:weather/pages/forecast.dart';
 import 'package:weather/pages/today.dart';
 
@@ -23,10 +23,10 @@ class NavigationBarBloc {
   void _eventToState(NavigationBarEvent event) async {
     switch (event.runtimeType) {
       case RouteToTodayWeatherEvent:
-        _navigationBarSink.add(Today());
+        _navigationBarSink.add(const TodayWeather());
         break;
       case RouteToForecastWeatherEvent:
-        _navigationBarSink.add(Forecast());
+        _navigationBarSink.add(const Forecast());
         break;
     }
   }

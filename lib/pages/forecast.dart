@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:weather/bloc/forecastBloc.dart';
-import 'package:weather/entity/forecast/forecast.dart';
-import 'package:weather/events/forecastEvents.dart';
-import 'package:weather/pages/components/appBar.dart';
 import 'package:intl/intl.dart';
+
+import 'package:weather/bloc/forecast_bloc.dart';
+import 'package:weather/entity/forecast/forecast.dart';
+import 'package:weather/events/forecast_events.dart';
+import 'package:weather/pages/components/app_bar.dart';
 import 'package:weather/style/icons.dart';
 import 'package:weather/style/text.dart';
 
 class Forecast extends StatefulWidget {
+  const Forecast({Key? key}) : super(key: key);
+
   @override
   _ForecastState createState() => _ForecastState();
 }
@@ -26,13 +29,13 @@ class _ForecastState extends State<Forecast> {
           return Column(
             children: [
               (snapshot.hasData)
-                  ? WeatherAppBar(title: snapshot.data.city.name)
-                  : WeatherAppBar(title: "Forecast"),
+                  ? WeatherAppBar(title: snapshot.data.city.name.toString())
+                  : const WeatherAppBar(title: "Forecast"),
               (snapshot.hasError)
                   ? Expanded(
                       child: Center(
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
                             snapshot.error.toString(),
                             style: CustomTextStyle.textError,
@@ -41,8 +44,8 @@ class _ForecastState extends State<Forecast> {
                       ),
                     )
                   : (snapshot.hasData)
-                      ? ForecastBody(data: snapshot.data)
-                      : Expanded(
+                      ? ForecastBody(data: snapshot.data as ForecastApi)
+                      : const Expanded(
                           child: Center(
                             child: CircularProgressIndicator(),
                           ),
@@ -64,7 +67,10 @@ class _ForecastState extends State<Forecast> {
 class ForecastBody extends StatelessWidget {
   final ForecastApi data;
 
-  ForecastBody({required this.data});
+  const ForecastBody({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +90,7 @@ class ForecastBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15),
                 height: 40,
                 alignment: Alignment.centerLeft,
                 width: MediaQuery.of(context).size.width,
@@ -100,7 +106,7 @@ class ForecastBody extends StatelessWidget {
               ),
               ListView.separated(
                   itemCount: data.list[key]!.length,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   separatorBuilder: (context, index) {
                     return Divider(
@@ -112,7 +118,7 @@ class ForecastBody extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
                       leading: Container(
-                        padding: EdgeInsets.only(right: 25),
+                        padding: const EdgeInsets.only(right: 25),
                         child: Icon(
                           CustomIcons
                               .icons[data.list[key]![index].weather[0].icon],

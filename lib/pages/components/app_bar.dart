@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:weather/style/text.dart';
 
 class WeatherAppBar extends StatelessWidget {
   final String title;
 
-  WeatherAppBar({required this.title});
+  const WeatherAppBar({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,7 @@ class WeatherAppBar extends StatelessWidget {
             color: Colors.blueAccent,
             height: 2.0,
           ),
-          preferredSize: Size.fromHeight(2.0),
+          preferredSize: const Size.fromHeight(2.0),
         ),
       ],
     );

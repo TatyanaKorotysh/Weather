@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:weather/bloc/navigationBarBloc.dart';
-import 'package:weather/events/NavigationBarEvents.dart';
+import 'package:weather/bloc/navigation_bar_bloc.dart';
+import 'package:weather/events/navigation_bar_events.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _NavigationBarState extends State<NavigationBar> {
           stream: _navigationBarBloc.navigationBarStream,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return snapshot.data;
+              return snapshot.data as Widget;
             } else {
               return const Center(
                 child: CircularProgressIndicator(),
