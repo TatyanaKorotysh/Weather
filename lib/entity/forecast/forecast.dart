@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+import 'package:intl/intl.dart';
 import 'package:weather/entity/forecast/list.dart';
 
 import 'city.dart';
@@ -10,7 +12,7 @@ class ForecastApi {
   final String cod;
   final int message;
   final int cnt;
-  final List<ForecastList> list;
+  final Map<String, List<ForecastList>> list;
   final City city;
   ForecastApi({
     required this.cod,

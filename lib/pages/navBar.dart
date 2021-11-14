@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weather/bloc/navigationBarBloc.dart';
 import 'package:weather/events/NavigationBarEvents.dart';
+import 'package:weather/pages/components/appBar.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({Key? key}) : super(key: key);
@@ -39,9 +41,6 @@ class _NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter Demo Home Page'),
-      ),
       body: Center(
         child: StreamBuilder(
           stream: _navigationBarBloc.navigationBarSink,
@@ -56,20 +55,28 @@ class _NavigationBarState extends State<NavigationBar> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Today',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(width: 2, color: Colors.grey.shade300),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Forecast',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+        ),
+        child: BottomNavigationBar(
+          elevation: 0,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.sun),
+              label: 'Today',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.cloudMoon),
+              label: 'Forecast',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blueAccent,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

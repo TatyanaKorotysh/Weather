@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:weather/entity/weather/today.dart';
+import 'package:weather/entity/today/today.dart';
 import 'package:weather/events/todayWeatherEvents.dart';
 import 'package:weather/location/location.dart';
 import 'package:weather/models/todayWeatherModel.dart';

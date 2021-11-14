@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 import 'package:weather/entity/forecast/forecast.dart';
+import 'package:weather/entity/forecast/list.dart';
 import 'package:weather/events/forecastEvents.dart';
 import 'package:weather/location/location.dart';
 import 'package:weather/models/forecastModel.dart';
@@ -21,6 +23,7 @@ class ForecastBloc {
 
     final ForecastModel model = ForecastModel();
     final data = await model.reloadForecast(loationData[0]);
+    //data.list = _groupForecastList(data.list);
 
     _forecastStream.add(data);
   }
@@ -28,5 +31,13 @@ class ForecastBloc {
   void dispose() {
     _forecastStateController.close();
     _forecastEventController.close();
+  }
+
+  Map<int, List<ForecastList>> _groupForecastList(List<ForecastList> data) {
+    final groups = groupBy(data, (ForecastList e) {
+      return e.dtTxt.weekday;
+    });
+
+    return groups;
   }
 }

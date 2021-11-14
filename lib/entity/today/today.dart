@@ -2,8 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:weather/entity/clouds.dart';
 import 'package:weather/entity/coord.dart';
 import 'package:weather/entity/main.dart';
+import 'package:weather/entity/today/sys.dart';
 import 'package:weather/entity/weather.dart';
-import 'package:weather/entity/weather/sys.dart';
 import 'package:weather/entity/wind.dart';
 
 part 'today.g.dart';

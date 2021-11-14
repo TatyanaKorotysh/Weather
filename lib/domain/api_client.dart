@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:geocoding/geocoding.dart';
 import 'package:weather/entity/forecast/forecast.dart';
-import 'package:weather/entity/weather/today.dart';
+import 'package:weather/entity/today/today.dart';
 
 class ApiClinets {
   final client = HttpClient();
@@ -12,7 +12,7 @@ class ApiClinets {
     final locality = data.locality.toString().replaceAll(' ', '%20');
     final url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=' +
         locality +
-        '&appid=73092b0d2461a51272dfb17a5eccf122');
+        '&units=metric&appid=73092b0d2461a51272dfb17a5eccf122');
 
     final request = await client.getUrl(url);
     final response = await request.close();
@@ -26,7 +26,7 @@ class ApiClinets {
     final url = Uri.parse(
         'https://api.openweathermap.org/data/2.5/forecast?q=' +
             locality +
-            '&appid=73092b0d2461a51272dfb17a5eccf122');
+            '&units=metric&appid=73092b0d2461a51272dfb17a5eccf122');
 
     final request = await client.getUrl(url);
     final response = await request.close();

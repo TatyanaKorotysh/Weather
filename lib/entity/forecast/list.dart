@@ -15,10 +15,10 @@ class ForecastList {
   final Clouds clouds;
   final Wind wind;
   final int visibility;
-  final int pop;
+  final double pop;
   final Sys sys;
   @JsonKey(name: 'dt_txt')
-  final String dtTxt;
+  final DateTime dtTxt;
   ForecastList({
     required this.dt,
     required this.main,

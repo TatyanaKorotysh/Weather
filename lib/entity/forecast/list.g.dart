@@ -15,9 +15,9 @@ ForecastList _$ForecastListFromJson(Map<String, dynamic> json) => ForecastList(
       clouds: Clouds.fromJson(json['clouds'] as Map<String, dynamic>),
       wind: Wind.fromJson(json['wind'] as Map<String, dynamic>),
       visibility: json['visibility'] as int,
-      pop: json['pop'] as int,
+      pop: (json['pop'] as num).toDouble(),
       sys: Sys.fromJson(json['sys'] as Map<String, dynamic>),
-      dtTxt: json['dt_txt'] as String,
+      dtTxt: DateTime.parse(json['dt_txt']),
     );
 
 Map<String, dynamic> _$ForecastListToJson(ForecastList instance) =>
