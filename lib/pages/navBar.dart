@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weather/bloc/navigationBarBloc.dart';
 import 'package:weather/events/NavigationBarEvents.dart';
-import 'package:weather/pages/components/appBar.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({Key? key}) : super(key: key);

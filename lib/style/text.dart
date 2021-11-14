@@ -11,4 +11,6 @@ class CustomTextStyle {
       TextStyle(color: Colors.blueAccent, fontSize: 36);
   static const TextStyle textButton =
       TextStyle(color: Colors.orange, fontSize: 18);
+  static const TextStyle textError =
+      TextStyle(color: Colors.deepOrange, fontSize: 18);
 }

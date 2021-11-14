@@ -28,13 +28,25 @@ class _TodayState extends State<Today> {
         return Column(
           children: [
             WeatherAppBar(title: "Today"),
-            (snapshot.hasData)
-                ? TodayBody(data: snapshot.data)
-                : Expanded(
+            (snapshot.hasError)
+                ? Expanded(
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          snapshot.error.toString(),
+                          style: CustomTextStyle.textError,
+                        ),
+                      ),
                     ),
-                  ),
+                  )
+                : (snapshot.hasData)
+                    ? TodayBody(data: snapshot.data)
+                    : Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
           ],
         );
       },

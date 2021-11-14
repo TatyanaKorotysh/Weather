@@ -21,12 +21,16 @@ class TodayWeatherBloc {
   }
 
   void _eventToState(TodatWeatherEvent event) async {
-    final loationData = await Location().getLocationData();
+    try {
+      final loationData = await Location().getLocationData();
 
-    final TodayWeatherModel model = TodayWeatherModel();
-    final todayWeatherData = await model.reloadTodayWeather(loationData[0]);
+      final TodayWeatherModel model = TodayWeatherModel();
+      final todayWeatherData = await model.reloadTodayWeather(loationData[0]);
 
-    _todayWeatherSink.add(todayWeatherData);
+      _todayWeatherSink.add(todayWeatherData);
+    } catch (error) {
+      _todayWeatherSink.addError(error);
+    }
   }
 
   void dispose() {

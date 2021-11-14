@@ -17,12 +17,16 @@ class ForecastBloc {
   }
 
   void _eventToState(ForecastEvent event) async {
-    final loationData = await Location().getLocationData();
+    try {
+      final loationData = await Location().getLocationData();
 
-    final ForecastModel model = ForecastModel();
-    final data = await model.reloadForecast(loationData[0]);
+      final ForecastModel model = ForecastModel();
+      final data = await model.reloadForecast(loationData[0]);
 
-    _forecastSink.add(data);
+      _forecastSink.add(data);
+    } catch (error) {
+      _forecastSink.addError(error);
+    }
   }
 
   void dispose() {

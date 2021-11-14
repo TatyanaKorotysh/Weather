@@ -28,9 +28,12 @@ class Location {
   }
 
   Future<List<Placemark>> getLocationData() async {
-    final position = await determinePosition();
-
-    return await placemarkFromCoordinates(
-        position.latitude, position.longitude);
+    try {
+      final position = await determinePosition();
+      return await placemarkFromCoordinates(
+          position.latitude, position.longitude);
+    } catch (error) {
+      throw Exception(error);
+    }
   }
 }
