@@ -34,12 +34,27 @@ class _TodayWeatherState extends State<TodayWeather> {
             (snapshot.hasError)
                 ? Expanded(
                     child: Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          snapshot.error.toString(),
-                          style: CustomTextStyle.textError,
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 30),
+                            child: const Text(
+                              "Something is wrong. Please check your internet connection and location services.",
+                              style: CustomTextStyle.textError,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _todayWeatherBloc.todayWeatherEventSink
+                                  .add(UpdateTodayWeatherEvent());
+                            },
+                            icon: const Icon(Icons.refresh_rounded),
+                            iconSize: 50,
+                            color: Colors.blueAccent,
+                          ),
+                        ],
                       ),
                     ),
                   )
