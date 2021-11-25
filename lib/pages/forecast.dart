@@ -23,16 +23,42 @@ class _ForecastState extends State<Forecast> {
     return BlocBuilder<ForecastCubit, ForecastApi?>(
         builder: (context, forecastData) {
       return Column(children: [
-        (forecastData == null)
-            ? const WeatherAppBar(title: "Forecast")
-            : WeatherAppBar(title: forecastData.city.name.toString()),
+        (forecastData != null && forecastData.error == null)
+            ? WeatherAppBar(title: forecastData.city!.name.toString())
+            : const WeatherAppBar(title: "Forecast"),
         (forecastData == null)
             ? const Expanded(
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),
               )
-            : ForecastBody(data: forecastData)
+            : (forecastData.error == null)
+                ? ForecastBody(data: forecastData)
+                : Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 30),
+                            child: Text(
+                              "${forecastData.error}",
+                              style: CustomTextStyle.textError,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context.read<ForecastCubit>().getForecastData();
+                            },
+                            icon: const Icon(Icons.refresh_rounded),
+                            iconSize: 50,
+                            color: Colors.blueAccent,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
       ]);
     });
   }
@@ -51,7 +77,7 @@ class ForecastBody extends StatelessWidget {
     return Expanded(
       child: ListView.separated(
         shrinkWrap: true,
-        itemCount: data.list.length,
+        itemCount: data.list!.length,
         separatorBuilder: (context, index) {
           return Divider(
             color: Colors.grey[300],
@@ -59,7 +85,7 @@ class ForecastBody extends StatelessWidget {
           );
         },
         itemBuilder: (BuildContext context, int index) {
-          String key = data.list.keys.elementAt(index);
+          String key = data.list!.keys.elementAt(index);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -79,7 +105,7 @@ class ForecastBody extends StatelessWidget {
                 ),
               ),
               ListView.separated(
-                  itemCount: data.list[key]!.length,
+                  itemCount: data.list![key]!.length,
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   separatorBuilder: (context, index) {
@@ -95,22 +121,22 @@ class ForecastBody extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 25),
                         child: Icon(
                           CustomIcons
-                              .icons[data.list[key]![index].weather[0].icon],
+                              .icons[data.list![key]![index].weather[0].icon],
                           color: Colors.amber,
                           size: 35,
                         ),
                       ),
                       title: Text(
                         DateFormat('HH:mm')
-                            .format(data.list[key]![index].dtTxt),
+                            .format(data.list![key]![index].dtTxt),
                         style: CustomTextStyle.title,
                       ),
                       subtitle: Text(
-                        data.list[key]![index].weather[0].main,
+                        data.list![key]![index].weather[0].main,
                         style: CustomTextStyle.simpleText,
                       ),
                       trailing: Text(
-                        "${data.list[key]![index].main.temp.toInt()}°",
+                        "${data.list![key]![index].main.temp.toInt()}°",
                         style: CustomTextStyle.largeText,
                       ),
                     );

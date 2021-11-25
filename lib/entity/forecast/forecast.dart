@@ -1,5 +1,3 @@
-import 'package:collection/collection.dart';
-import 'package:intl/intl.dart';
 import 'package:weather/entity/forecast/list.dart';
 
 import 'city.dart';
@@ -9,18 +7,24 @@ part 'forecast.g.dart';
 
 @JsonSerializable()
 class ForecastApi {
-  final String cod;
-  final int message;
-  final int cnt;
-  final Map<String, List<ForecastList>> list;
-  final City city;
+  final String? cod;
+  final int? message;
+  final int? cnt;
+  final Map<String, List<ForecastList>>? list;
+  final City? city;
+  final String? error;
   ForecastApi({
-    required this.cod,
-    required this.message,
-    required this.cnt,
-    required this.list,
-    required this.city,
+    this.cod,
+    this.message,
+    this.cnt,
+    this.list,
+    this.city,
+    this.error,
   });
+
+  set error(String? mess) {
+    error = mess;
+  }
 
   factory ForecastApi.fromJson(Map<String, dynamic> json) =>
       _$ForecastApiFromJson(json);

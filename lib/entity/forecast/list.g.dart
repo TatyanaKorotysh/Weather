@@ -30,5 +30,5 @@ Map<String, dynamic> _$ForecastListToJson(ForecastList instance) =>
       'visibility': instance.visibility,
       'pop': instance.pop,
       'sys': instance.sys,
-      'dt_txt': instance.dtTxt,
+      'dt_txt': instance.dtTxt.toIso8601String(),
     };

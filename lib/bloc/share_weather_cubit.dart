@@ -7,7 +7,7 @@ class ShareWeatherCubit extends Cubit<void> {
 
   void shareWeather(TodayWeatherApi data) {
     String shareText =
-        "Weather today, ${data.name}\n ${(data.main.temp).toInt()}°C | ${data.weather[0].main}";
+        "Weather today, ${data.name}\n ${(data.main!.temp).toInt()}°C | ${data.weather![0].main}";
     Share.share(shareText);
   }
 }

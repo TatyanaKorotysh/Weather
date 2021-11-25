@@ -8,21 +8,32 @@ part of 'today.dart';
 
 TodayWeatherApi _$TodayWeatherApiFromJson(Map<String, dynamic> json) =>
     TodayWeatherApi(
-      coord: Coord.fromJson(json['coord'] as Map<String, dynamic>),
-      weather: (json['weather'] as List<dynamic>)
-          .map((dynamic e) => Weather.fromJson(e as Map<String, dynamic>))
+      coord: json['coord'] == null
+          ? null
+          : Coord.fromJson(json['coord'] as Map<String, dynamic>),
+      weather: (json['weather'] as List<dynamic>?)
+          ?.map((dynamic e) => Weather.fromJson(e as Map<String, dynamic>))
           .toList(),
-      base: json['base'] as String,
-      main: Main.fromJson(json['main'] as Map<String, dynamic>),
-      visibility: json['visibility'] as int,
-      wind: Wind.fromJson(json['wind'] as Map<String, dynamic>),
-      clouds: Clouds.fromJson(json['clouds'] as Map<String, dynamic>),
-      dt: json['dt'] as int,
-      sys: Sys.fromJson(json['sys'] as Map<String, dynamic>),
-      timezone: json['timezone'] as int,
-      id: json['id'] as int,
-      name: json['name'] as String,
-      cod: json['cod'] as int,
+      base: json['base'] as String?,
+      main: json['main'] == null
+          ? null
+          : Main.fromJson(json['main'] as Map<String, dynamic>),
+      visibility: json['visibility'] as int?,
+      wind: json['wind'] == null
+          ? null
+          : Wind.fromJson(json['wind'] as Map<String, dynamic>),
+      clouds: json['clouds'] == null
+          ? null
+          : Clouds.fromJson(json['clouds'] as Map<String, dynamic>),
+      dt: json['dt'] as int?,
+      sys: json['sys'] == null
+          ? null
+          : Sys.fromJson(json['sys'] as Map<String, dynamic>),
+      timezone: json['timezone'] as int?,
+      id: json['id'] as int?,
+      name: json['name'] as String?,
+      cod: json['cod'] as int?,
+      error: json['error'] as String?,
     );
 
 Map<String, dynamic> _$TodayWeatherApiToJson(TodayWeatherApi instance) =>
@@ -40,4 +51,5 @@ Map<String, dynamic> _$TodayWeatherApiToJson(TodayWeatherApi instance) =>
       'id': instance.id,
       'name': instance.name,
       'cod': instance.cod,
+      'error': instance.error,
     };

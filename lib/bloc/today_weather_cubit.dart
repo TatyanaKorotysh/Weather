@@ -15,7 +15,10 @@ class TodayWeatherCubit extends Cubit<TodayWeatherApi?> {
 
       emit(todayWeatherData);
     } catch (error) {
-      addError(error);
+      final todayWeatherData = TodayWeatherApi(
+          error:
+              "Something is wrong. Please check your internet connection and location services.");
+      emit(todayWeatherData);
     }
   }
 }

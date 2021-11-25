@@ -11,11 +11,14 @@ class ForecastCubit extends Cubit<ForecastApi?> {
       final loationData = await Location().getLocationData();
 
       final ForecastModel model = ForecastModel();
-      final data = await model.reloadForecast(loationData[0]);
+      final forecastData = await model.reloadForecast(loationData[0]);
 
-      emit(data);
+      emit(forecastData);
     } catch (error) {
-      addError(error);
+      final forecastData = ForecastApi(
+          error:
+              "Something is wrong. Please check your internet connection and location services.");
+      emit(forecastData);
     }
   }
 }

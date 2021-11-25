@@ -32,7 +32,35 @@ class _TodayWeatherState extends State<TodayWeather> {
                   child: CircularProgressIndicator(),
                 ),
               )
-            : TodayBody(data: todatWeatherData)
+            : (todatWeatherData.error == null)
+                ? TodayBody(data: todatWeatherData)
+                : Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 30),
+                            child: Text(
+                              "${todatWeatherData.error}",
+                              style: CustomTextStyle.textError,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<TodayWeatherCubit>()
+                                  .getTodayWeatherData();
+                            },
+                            icon: const Icon(Icons.refresh_rounded),
+                            iconSize: 50,
+                            color: Colors.blueAccent,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
       ]);
     });
   }
@@ -123,15 +151,15 @@ class DetailTodayWeather extends StatelessWidget {
           children: [
             DetailIcon(
               icon: FontAwesomeIcons.tint,
-              data: "${data.main.humidity} %",
+              data: "${data.main!.humidity} %",
             ),
             DetailIcon(
               icon: FontAwesomeIcons.thermometerHalf,
-              data: "${data.main.temp} °C",
+              data: "${data.main!.temp} °C",
             ),
             DetailIcon(
               icon: FontAwesomeIcons.snowflake,
-              data: "${data.main.pressure} hPa",
+              data: "${data.main!.pressure} hPa",
             )
           ],
         ),
@@ -141,11 +169,11 @@ class DetailTodayWeather extends StatelessWidget {
           children: [
             DetailIcon(
               icon: FontAwesomeIcons.wind,
-              data: "${data.wind.speed} km/h",
+              data: "${data.wind!.speed} km/h",
             ),
             DetailIcon(
               icon: FontAwesomeIcons.compass,
-              data: windDirection(data.wind.deg),
+              data: windDirection(data.wind!.deg),
             ),
           ],
         ),
@@ -205,20 +233,20 @@ class MainTodayWeather extends StatelessWidget {
         Container(
           padding: const EdgeInsets.only(right: 25, top: 10),
           child: Icon(
-            CustomIcons.icons[data.weather[0].icon],
+            CustomIcons.icons[data.weather![0].icon],
             color: Colors.amber,
             size: 100,
           ),
         ),
         Container(
           child: Text(
-            "${data.name}, ${data.sys.country}",
+            "${data.name}, ${data.sys!.country}",
             style: CustomTextStyle.title,
           ),
           padding: const EdgeInsets.symmetric(vertical: 20),
         ),
         Text(
-          "${(data.main.temp).toInt()}°C | ${data.weather[0].main}",
+          "${(data.main!.temp).toInt()}°C | ${data.weather![0].main}",
           style: CustomTextStyle.bigText,
         ),
       ],
