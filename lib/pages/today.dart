@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:weather/bloc/share_weather_bloc.dart';
-import 'package:weather/bloc/today_weather_bloc.dart';
+import 'package:weather/bloc/share_weather_cubit.dart';
+import 'package:weather/bloc/today_weather_cubit.dart';
 import 'package:weather/entity/today/today.dart';
-import 'package:weather/events/share_weather_events.dart';
-import 'package:weather/events/today_weather_events.dart';
 import 'package:weather/location/wind_direction.dart';
 import 'package:weather/pages/components/app_bar.dart';
 import 'package:weather/style/icons.dart';
@@ -19,62 +18,23 @@ class TodayWeather extends StatefulWidget {
 }
 
 class _TodayWeatherState extends State<TodayWeather> {
-  final _todayWeatherBloc = TodayWeatherBloc();
-
   @override
   Widget build(BuildContext context) {
-    _todayWeatherBloc.todayWeatherEventSink.add(UpdateTodayWeatherEvent());
+    context.read<TodayWeatherCubit>().getTodayWeatherData();
 
-    return StreamBuilder(
-      stream: _todayWeatherBloc.todayWeatherStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Column(
-          children: [
-            const WeatherAppBar(title: "Today"),
-            (snapshot.hasError)
-                ? Expanded(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 30),
-                            child: const Text(
-                              "Something is wrong. Please check your internet connection and location services.",
-                              style: CustomTextStyle.textError,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              _todayWeatherBloc.todayWeatherEventSink
-                                  .add(UpdateTodayWeatherEvent());
-                            },
-                            icon: const Icon(Icons.refresh_rounded),
-                            iconSize: 50,
-                            color: Colors.blueAccent,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : (snapshot.hasData)
-                    ? TodayBody(data: snapshot.data as TodayWeatherApi)
-                    : const Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _todayWeatherBloc.dispose();
+    return BlocBuilder<TodayWeatherCubit, TodayWeatherApi?>(
+        builder: (context, todatWeatherData) {
+      return Column(children: [
+        const WeatherAppBar(title: "Today"),
+        (todatWeatherData == null)
+            ? const Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : TodayBody(data: todatWeatherData)
+      ]);
+    });
   }
 }
 
@@ -121,17 +81,15 @@ class TodayBody extends StatelessWidget {
 }
 
 class ShareButton extends StatelessWidget {
-  final _shareWeatherBloc = ShareWeatherBloc();
   final TodayWeatherApi data;
 
-  ShareButton({Key? key, required this.data}) : super(key: key);
+  const ShareButton({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        _shareWeatherBloc.shareWeatherEventSink
-            .add(SendWeatherAsTextEvent(shareData: data));
+        context.read<ShareWeatherCubit>().shareWeather(data);
       },
       child: const Text(
         "Share",

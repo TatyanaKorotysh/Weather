@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:weather/bloc/forecast_cubit.dart';
 
-import 'package:weather/bloc/forecast_bloc.dart';
 import 'package:weather/entity/forecast/forecast.dart';
-import 'package:weather/events/forecast_events.dart';
 import 'package:weather/pages/components/app_bar.dart';
 import 'package:weather/style/icons.dart';
 import 'package:weather/style/text.dart';
@@ -16,66 +16,25 @@ class Forecast extends StatefulWidget {
 }
 
 class _ForecastState extends State<Forecast> {
-  final _forecastBloc = ForecastBloc();
-
   @override
   Widget build(BuildContext context) {
-    _forecastBloc.forecastEventSink.add(UpdateForecastEvent());
+    context.read<ForecastCubit>().getForecastData();
 
-    return Center(
-      child: StreamBuilder(
-        stream: _forecastBloc.forecastSink,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return Column(
-            children: [
-              (snapshot.hasData)
-                  ? WeatherAppBar(title: snapshot.data.city.name.toString())
-                  : const WeatherAppBar(title: "Forecast"),
-              (snapshot.hasError)
-                  ? Expanded(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 30),
-                              child: const Text(
-                                "Something is wrong. Please check your internet connection and location services.",
-                                style: CustomTextStyle.textError,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _forecastBloc.forecastEventSink
-                                    .add(UpdateForecastEvent());
-                              },
-                              icon: const Icon(Icons.refresh_rounded),
-                              iconSize: 50,
-                              color: Colors.blueAccent,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : (snapshot.hasData)
-                      ? ForecastBody(data: snapshot.data as ForecastApi)
-                      : const Expanded(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _forecastBloc.dispose();
+    return BlocBuilder<ForecastCubit, ForecastApi?>(
+        builder: (context, forecastData) {
+      return Column(children: [
+        (forecastData == null)
+            ? const WeatherAppBar(title: "Forecast")
+            : WeatherAppBar(title: forecastData.city.name.toString()),
+        (forecastData == null)
+            ? const Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : ForecastBody(data: forecastData)
+      ]);
+    });
   }
 }
 

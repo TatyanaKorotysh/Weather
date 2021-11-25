@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:weather/bloc/navigation_bar_bloc.dart';
-import 'package:weather/events/navigation_bar_events.dart';
+import 'package:weather/bloc/navigation_cubit.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({Key? key}) : super(key: key);
@@ -12,47 +12,19 @@ class NavigationBar extends StatefulWidget {
 }
 
 class _NavigationBarState extends State<NavigationBar> {
-  final _navigationBarBloc = NavigationBarBloc();
   int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        _navigationBarBloc.navigationBarEventSink
-            .add(RouteToTodayWeatherEvent());
-        break;
-      case 1:
-        _navigationBarBloc.navigationBarEventSink
-            .add(RouteToForecastWeatherEvent());
-        break;
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _navigationBarBloc.navigationBarEventSink.add(RouteToTodayWeatherEvent());
+    context.read<NavigationCubit>().getTodayWeatherPage();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: StreamBuilder(
-          stream: _navigationBarBloc.navigationBarStream,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return snapshot.data as Widget;
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
+      body: BlocBuilder<NavigationCubit, Widget>(
+        builder: (context, page) => page,
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -61,28 +33,33 @@ class _NavigationBarState extends State<NavigationBar> {
           ),
         ),
         child: BottomNavigationBar(
-          elevation: 0,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.sun),
-              label: 'Today',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.cloudMoon),
-              label: 'Forecast',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blueAccent,
-          onTap: _onItemTapped,
-        ),
+            elevation: 0,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.sun),
+                label: 'Today',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.cloudMoon),
+                label: 'Forecast',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blueAccent,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+              switch (index) {
+                case 0:
+                  context.read<NavigationCubit>().getTodayWeatherPage();
+                  break;
+                case 1:
+                  context.read<NavigationCubit>().getForecastPage();
+                  break;
+              }
+            }),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _navigationBarBloc.dispose();
   }
 }
